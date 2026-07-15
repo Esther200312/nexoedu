@@ -1111,7 +1111,7 @@ function CalendarioSection() {
 
   return (
     <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-4 min-h-0">
-      <div className="lg:col-span-2 bg-gradient-to-br from-[#0F2038] to-[#152a4d] rounded-2xl p-6 flex flex-col relative overflow-hidden">
+      <div className="lg:col-span-2 bg-gradient-to-br from-[#0F2038] to-[#152a4d] rounded-2xl p-6 flex flex-col relative overflow-visible">
         <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-[#8B5CF6] opacity-10 blur-2xl" />
         <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-[#5AC8E8] opacity-10 blur-2xl" />
 
@@ -1131,7 +1131,7 @@ function CalendarioSection() {
         <div className="grid grid-cols-7 gap-1 text-center text-[#5A6E8C] text-xs font-semibold mb-2 relative">
           {NOMBRES_DIA.map((d, i) => <div key={i}>{d}</div>)}
         </div>
-        <div className="grid grid-cols-7 gap-1.5 flex-1 relative">
+        <div className="grid grid-cols-7 gap-1.5 relative">
           {dias.map((d, i) => {
             if (!d) return <div key={i} />;
             const esHoy = esMesActual && d === hoy.getDate();
@@ -1411,10 +1411,10 @@ function StudentHome({ onNavigate }) {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-1 min-h-0">
       <div className="lg:col-span-2 flex flex-col gap-4">
         <BibliotecaCarrusel onNavigate={onNavigate} />
-        <div className="flex items-center gap-4">
-          <AtajoCard label="Juegos" sub="Desafíos de concentración" color={ESTADO.logrado} variant="one-eye" pose="jugando" onClick={() => onNavigate("juegos")} />
-          <AtajoCard label="Flashcards" sub="Repaso rápido y divertido" color={ESTADO.progreso} variant="two-eye" pose="estudiando" onClick={() => onNavigate("flashcards")} />
-        </div>
+        <div className="flex flex-col sm:flex-row gap-4">
+  <AtajoCard label="Juegos" sub="Desafíos de concentración" color={ESTADO.logrado} variant="one-eye" pose="jugando" onClick={() => onNavigate("juegos")} />
+  <AtajoCard label="Flashcards" sub="Repaso rápido y divertido" color={ESTADO.progreso} variant="two-eye" pose="estudiando" onClick={() => onNavigate("flashcards")} />
+</div>
       </div>
 
       <div className="bg-[#0F2038] rounded-2xl p-6 flex flex-col">
