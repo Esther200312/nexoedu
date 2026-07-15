@@ -1408,8 +1408,7 @@ function TareaWidget({ color, icon: Icon, titulo, detalle, onClick }) {
 
 function StudentHome({ onNavigate }) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-1 min-h-0">
-      <div className="lg:col-span-2 flex flex-col gap-4">
+<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:flex-1 lg:min-h-0">     <div className="lg:col-span-2 flex flex-col gap-4">
         <BibliotecaCarrusel onNavigate={onNavigate} />
         <div className="flex flex-col sm:flex-row gap-4">
   <AtajoCard label="Juegos" sub="Desafíos de concentración" color={ESTADO.logrado} variant="one-eye" pose="jugando" onClick={() => onNavigate("juegos")} />
@@ -1418,7 +1417,7 @@ function StudentHome({ onNavigate }) {
       </div>
 
       <div className="bg-[#0F2038] rounded-2xl p-6 flex flex-col">
-        <h2 className="text-white font-bold text-lg mb-4">Mi Calendario</h2>
+        <h2 className="text-white font-bold text-lg mb-4">Notificaciones</h2>
         <div className="flex flex-col gap-2 flex-1">
           <TareaWidget color={ESTADO.pendiente} icon={ClipboardCheck} titulo="Tareas pendientes" detalle="Tienes 2 tareas por completar" onClick={() => onNavigate("calendario")} />
           <TareaWidget color={ESTADO.progreso} icon={BookOpen} titulo="Lecturas incompletas" detalle="Tienes 1 lectura sin terminar" onClick={() => onNavigate("biblioteca")} />
@@ -1456,7 +1455,7 @@ function StudentDashboard({ onExit, user, active, onSelect }) {
   return (
     <div className="flex flex-col md:flex-row gap-4 h-full">
       <Sidebar items={NAV_STUDENT} name={nombreMostrar} active={active} onSelect={onSelect} />
-      <div className="flex-1 flex flex-col min-w-0 pb-20 md:pb-0 overflow-y-auto">
+      <div className="flex-1 flex flex-col min-w-0 pb-28 md:pb-0 overflow-y-auto">
         <MobileTopBar onExit={onExit} />
         <div className="hidden md:flex justify-end mb-2">
           <button onClick={onExit} className="text-xs text-[#8FA3C0] hover:text-white underline">Cerrar sesión</button>
@@ -1819,7 +1818,7 @@ function TeacherDashboard({ onExit, user, active, onSelect }) {
   return (
     <div className="flex flex-col md:flex-row gap-4 h-full">
       <Sidebar items={NAV_TEACHER} name={nombreMostrar} active={active} onSelect={onSelect} />
-      <div className="flex-1 flex flex-col min-w-0 pb-20 md:pb-0 overflow-y-auto">
+      <div className="flex-1 flex flex-col min-w-0 pb-28 md:pb-0 overflow-y-auto">
         <MobileTopBar onExit={onExit} />
         <div className="hidden md:flex justify-end mb-2">
           <button onClick={onExit} className="text-xs text-[#8FA3C0] hover:text-white underline">Cerrar sesión</button>
