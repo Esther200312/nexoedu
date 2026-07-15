@@ -1,1 +1,8 @@
 @import "tailwindcss";
+:root {
+  color-scheme: light only;
+}
+
+* {
+  color-scheme: light only;
+}

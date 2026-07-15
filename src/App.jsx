@@ -403,7 +403,7 @@ function Login({ onEnter }) {
   };
 
   return (
-    <div className="w-full max-w-[420px] mx-auto bg-[#F2F3F5] rounded-3xl p-8 shadow-2xl relative z-10">
+<div className="w-full max-w-[420px] mx-auto bg-[#F2F3F5] rounded-3xl p-8 shadow-2xl relative z-10" style={{ backgroundColor: "#F2F3F5", colorScheme: "light" }}>
       <div className="flex flex-col items-center text-center mb-6">
         <img src="/logo-nexoedu.png" alt="NexoEdu" className="w-40 h-40 object-contain mb-2 mix-blend-multiply" />
       </div>
@@ -1455,7 +1455,7 @@ function StudentDashboard({ onExit, user, active, onSelect }) {
   return (
     <div className="flex flex-col md:flex-row gap-4 h-full">
       <Sidebar items={NAV_STUDENT} name={nombreMostrar} active={active} onSelect={onSelect} />
-      <div className="flex-1 flex flex-col min-w-0 pb-28 md:pb-0 overflow-y-auto">
+<div className="flex-1 flex flex-col min-w-0 min-h-0 pb-28 md:pb-0 overflow-y-auto">
         <MobileTopBar onExit={onExit} />
         <div className="hidden md:flex justify-end mb-2">
           <button onClick={onExit} className="text-xs text-[#8FA3C0] hover:text-white underline">Cerrar sesión</button>
