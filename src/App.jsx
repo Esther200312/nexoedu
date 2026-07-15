@@ -7,28 +7,45 @@ import {
 
 // ---- Tokens ----
 // Navy base:  #0B1A33 / #12233F / #16294A
-// Panel light: #F2F3F5
+// Panel light: #ffffff
 // Accent cyan: #5AC8E8
 // Mascots: coral #FF7A6B, amarillo #FFD65A, verde agua #4FD1B0
 
-const NAV_STUDENT = [
-  { key: "inicio", icon: Home, label: "Inicio" },
-  { key: "biblioteca", icon: BookOpen, label: "Biblioteca" },
-  { key: "juegos", icon: Gamepad2, label: "Juegos" },
-  { key: "flashcards", icon: Layers, label: "Flashcards" },
-  { key: "calendario", icon: Calendar, label: "Calendario" },
-  { key: "logros", icon: Star, label: "Mis Logros" },
-  { key: "perfil", icon: User, label: "Mi Perfil" },
+const ESTUDIANTES_REGISTRADOS = [
+  { nombre: "Acuña Felix Benjamin", dni: "12345678" },
+  { nombre: "Alanya Benites Adriana Daiana", dni: "12345678" },
+  { nombre: "Aybar Capcha Kenyi Marduck", dni: "12345678" },
+  { nombre: "Barrientos Silvestre Avril Lorena", dni: "12345678" },
+  { nombre: "Cardenas Villanueva Aldrich Derek", dni: "12345678" },
+  { nombre: "Cardenas Palacios Brayan Joel", dni: "12345678" },
+  { nombre: "Ccanto Vila Sebastian Gael Edgar", dni: "12345678" },
+  { nombre: "Chuco Quilca Antony Ruben", dni: "12345678" },
+  { nombre: "Escobar Berrocal Dareem Gabriel", dni: "12345678" },
+  { nombre: "Eyzaguirre Arroyo Fernando Andre", dni: "12345678" },
+  { nombre: "Gaspar Sovero Ariana Esperanza", dni: "12345678" },
+  { nombre: "Gomez Miranda Jhonson Mateo", dni: "12345678" },
+  { nombre: "Huaman Velapatiño Miguel Angel", dni: "12345678" }, 
+  { nombre: "Huatuco Buendia Sebastian Hernan", dni: "12345678" },
+  { nombre: "Kunz Huaman Samuel David", dni: "12345678" },
+  { nombre: "Mallqui Nuñez Junior Alexander", dni: "12345678" },
+  { nombre: "Mitacc Vilchez Valeria Rassiel", dni: "12345678" },
+  { nombre: "Orihuela Avila Gael Giordano", dni: "12345678" },
+  { nombre: "Palacios Meza Briyid Estrella", dni: "12345678" },
+  { nombre: "Perez Pizarro Jeamelly Esteysy", dni: "12345678" },
+  { nombre: "Poma Castañeda Daniel Aldo", dni: "12345678" },
+  { nombre: "Ramirez Fernandez Diego Augusto", dni: "12345678" },
+  { nombre: "Ramon Martinez Eduardo Andres", dni: "12345678" },
+  { nombre: "Rojas Aquino Esther Damaris", dni: "12345678" },
+  { nombre: "Romero Allca Anthoninho Jean", dni: "12345678" },
+  { nombre: "Romero Lopez Eduardo Alexis", dni: "12345678" },
+  { nombre: "Tacsa Poma Jhedrik Rodrigo", dni: "12345678" },
+  { nombre: "Vicente Zacarias Gianmarco Isai", dni: "12345678" },
+  { nombre: "Villegas Poma Delcy Milenn", dni: "12345678" }
 ];
 
-const NAV_TEACHER = [
-  { key: "inicio", icon: Home, label: "Inicio" },
-  { key: "cursos", icon: BookOpen, label: "Mis Cursos" },
-  { key: "capacitaciones", icon: ClipboardCheck, label: "Capacitaciones" },
-  { key: "evaluaciones", icon: ShieldCheck, label: "Evaluaciones" },
-  { key: "calendario", icon: Calendar, label: "Calendario" },
-  { key: "certificados", icon: IdCard, label: "Certificados" },
-  { key: "perfil", icon: User, label: "Mi Perfil" },
+
+const DOCENTES_REGISTRADOS = [
+  { nombre: "Estares Ventocilla Walter David", dni: "12345678" },
 ];
 
 // ---------- Fondo decorativo ----------
@@ -123,6 +140,14 @@ function SectionPlaceholder({ title, desc }) {
   );
 }
 
+// Función para quitar tildes y pasar todo a minúsculas
+const normalizarTexto = (texto) => {
+  return texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, ""); 
+};
+
 // ---------- LOGIN ----------
 function Login({ onEnter }) {
   const [role, setRole] = useState("estudiante");
@@ -130,31 +155,93 @@ function Login({ onEnter }) {
   const [dni, setDni] = useState("");
   const [errors, setErrors] = useState({ nombre: "", dni: "" });
 
-  const handleIngresar = () => {
+ const handleIngresar = (e) => {
+    if (e) e.preventDefault(); 
+
+    // CHIVATO: Si no ves este mensaje en la consola, tu código no se ha actualizado.
+    console.log("Iniciando validación estricta v2...", { nombre, dni });
+
     const newErrors = { nombre: "", dni: "" };
-    if (!nombre.trim()) newErrors.nombre = "Falta poner tus nombres y apellidos";
-    if (!dni.trim()) newErrors.dni = "Falta poner tu DNI";
-    setErrors(newErrors);
-    if (!newErrors.nombre && !newErrors.dni) {
-      onEnter(role);
+    const nombreLimpio = nombre.trim();
+    const dniLimpio = dni.trim();
+    
+    // --- REGLAS ESTRICTAS ---
+    const nombreValido = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(nombreLimpio);
+    const dniValido = /^\d{8}$/.test(dniLimpio); // EXACTAMENTE 8 DÍGITOS NUMÉRICOS
+
+    // Validamos que el nombre tenga sentido (solo letras y al menos 3 caracteres)
+    if (!nombreLimpio) {
+      newErrors.nombre = "Falta poner tus nombres";
+    } else if (!nombreValido) {
+      newErrors.nombre = "El nombre solo debe contener letras";
+    } else if (nombreLimpio.length < 3) {
+      newErrors.nombre = "Ingresa un nombre real";
+    }
+
+    // Validamos que el DNI sea real (8 números)
+    if (!dniLimpio) {
+      newErrors.dni = "Falta poner tu DNI";
+    } else if (!dniValido) {
+      newErrors.dni = "El DNI debe tener exactamente 8 números";
+    }
+    
+    // Si hay errores de formato, detenemos TODO aquí y no dejamos entrar
+    if (newErrors.nombre || newErrors.dni) {
+      console.log("Bloqueado por formato incorrecto:", newErrors);
+      setErrors(newErrors);
+      return; 
+    }
+
+    // --- BÚSQUEDA EN LA BASE DE DATOS ---
+    const listaUsuarios = role === "estudiante" ? ESTUDIANTES_REGISTRADOS : DOCENTES_REGISTRADOS;
+    const palabrasIngresadas = normalizarTexto(nombreLimpio).split(/\s+/);
+
+    const usuarioEncontrado = listaUsuarios.find((usuarioDB) => {
+      const nombreDB = normalizarTexto(usuarioDB.nombre);
+      const coincidenNombres = palabrasIngresadas.every(palabra => nombreDB.includes(palabra));
+      const coincideDNI = usuarioDB.dni === dniLimpio;
+
+      return coincidenNombres && coincideDNI;
+    });
+
+    if (usuarioEncontrado) {
+      console.log("¡Usuario válido! Ingresando...", usuarioEncontrado);
+      setErrors({ nombre: "", dni: "" });
+      onEnter(role); 
+    } else {
+      console.log("Bloqueado: El usuario no existe en la lista o el DNI no cuadra.");
+      setErrors({ 
+        nombre: "Usuario no encontrado. Revisa tus nombres.", 
+        dni: "El DNI no coincide." 
+      });
     }
   };
 
   return (
     <div className="w-full max-w-[420px] mx-auto bg-[#F2F3F5] rounded-3xl p-8 shadow-2xl relative z-10">
       <div className="flex flex-col items-center text-center mb-6">
-        <img src="/logo-nexoedu.png" alt="NexoEdu" className="w-40 h-40 object-contain mb-2" />
+        {/* Aquí agregamos mix-blend-multiply para quitar el fondo blanco del logo */}
+        <img 
+          src="/logo-nexoedu.png" 
+          alt="NexoEdu" 
+          className="w-40 h-40 object-contain mb-2 mix-blend-multiply" 
+        />
       </div>
 
       <p className="text-center text-sm font-semibold text-[#5B6B85] mb-3">¿Quién eres?</p>
       <div className="grid grid-cols-2 gap-3 mb-6">
         {[
           { key: "estudiante", icon: GraduationCap, title: "Estudiante", sub: "Accede a tu mundo de aprendizaje" },
-          { key: "docente", icon: User, title: "Docente", sub: "Gestiona tus cursos y capacitaciones" },
+          { key: "docente", icon: User, title: "Docente", sub: "Gestiona tus cursos" },
         ].map((r) => (
           <button
             key={r.key}
-            onClick={() => setRole(r.key)}
+            // Agregamos type="button" para que no active el formulario accidentalmente
+            type="button" 
+            onClick={() => {
+              setRole(r.key);
+              setErrors({ nombre: "", dni: "" }); 
+            }}
             className={`rounded-2xl p-4 text-left transition-all border-2 ${
               role === r.key
                 ? "bg-[#12233F] border-[#5AC8E8] text-white"
@@ -168,12 +255,19 @@ function Login({ onEnter }) {
         ))}
       </div>
 
-      <div className="space-y-3">
+      {/* Envolvemos los inputs y el botón en un <form> para activar el "Enter" */}
+      <form 
+        onSubmit={(e) => { 
+          e.preventDefault(); // Evita que la página se recargue al dar Enter
+          handleIngresar(); 
+        }} 
+        className="space-y-3"
+      >
         <div>
           <input
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
-            placeholder="Nombres y Apellidos Completos"
+            placeholder="Ej: Alanya Adriana"
             className={`w-full bg-white rounded-xl px-4 py-3 text-sm text-[#12233F] placeholder-[#A6B3C6] border focus:outline-none focus:ring-2 focus:ring-[#5AC8E8] ${
               errors.nombre ? "border-[#E5484D]" : "border-[#E3E7ED]"
             }`}
@@ -200,12 +294,12 @@ function Login({ onEnter }) {
           )}
         </div>
         <button
-          onClick={handleIngresar}
+          type="submit"
           className="w-full bg-[#5AC8E8] hover:bg-[#48b9db] transition-colors text-[#0B1A33] font-bold py-3 rounded-xl"
         >
           Ingresar
         </button>
-      </div>
+      </form>
       <p className="text-center text-xs text-[#8FA3C0] mt-4">¿Necesitas ayuda?</p>
     </div>
   );
